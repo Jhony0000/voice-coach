@@ -117,108 +117,8 @@
     <main class="main">
       <!-- About Section -->
       <section id="courses" class="services section">
-        <div class="container pt-5 section-title" data-aos="fade-up">
-          <h2>Courses</h2>
-          <div class="title-shape">
-            <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              ></path>
-            </svg>
-          </div>
-          <p>Enhance your voice and confidence with our tailored programs.</p>
-        </div>
-
         <div class="container" data-aos="fade-up" data-aos-delay="100">
-          <div class="row gy-4">
-            <!-- Course Card 1 -->
-            <div class="col-md-6">
-              <div class="card shadow-sm h-100">
-                <iframe
-                  class="card-img-top"
-                  height="250"
-                  src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-                  title="Confident Speaking Basics"
-                  allowfullscreen
-                ></iframe>
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <i class="bi bi-megaphone-fill me-2"></i>Confident Speaking
-                    Basics
-                  </h5>
-                  <p class="card-text">
-                    Build clarity and vocal confidence for work, school, or
-                    personal growth.
-                  </p>
-                  <ul class="list-unstyled mb-3">
-                    <li>
-                      <i class="bi bi-check-circle text-primary me-2"></i
-                      >Self-paced modules
-                    </li>
-                    <li>
-                      <i class="bi bi-check-circle text-primary me-2"></i>Free
-                      trial available
-                    </li>
-                    <li>
-                      <i class="bi bi-check-circle text-primary me-2"></i
-                      >Practice exercises included
-                    </li>
-                  </ul>
-                  <a
-                    href="https://calendly.com/sevil-voice/free-trial"
-                    class="btn btn-outline-primary me-2"
-                    >Try Free</a
-                  >
-                  <a
-                    href="https://buy.stripe.com/test_6oEaFX3XX0e9f3CfYY"
-                    class="btn btn-primary"
-                    >Buy Now – $49</a
-                  >
-                </div>
-              </div>
-            </div>
-
-            <!-- Course Card 2 -->
-            <div class="col-md-6">
-              <div class="card shadow-sm h-100">
-                <iframe
-                  class="card-img-top"
-                  height="250"
-                  src="https://www.youtube.com/embed/YOUR_VIDEO_ID_2"
-                  title="Voice Warm-ups & Vocal Health"
-                  allowfullscreen
-                ></iframe>
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <i class="bi bi-heart-pulse-fill me-2"></i>Voice Warm-ups &
-                    Vocal Health
-                  </h5>
-                  <p class="card-text">
-                    Learn effective routines to protect and strengthen your
-                    voice daily.
-                  </p>
-                  <ul class="list-unstyled mb-3">
-                    <li>
-                      <i class="bi bi-check-circle text-primary me-2"></i>Free
-                      course
-                    </li>
-                    <li>
-                      <i class="bi bi-check-circle text-primary me-2"></i>Great
-                      for teachers, singers, speakers
-                    </li>
-                  </ul>
-                  <a
-                    href="https://calendly.com/sevil-voice/free-session"
-                    class="btn btn-outline-primary"
-                    >Start Free</a
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="row gy-4" id="course-list"></div>
         </div>
       </section>
     </main>
@@ -425,5 +325,66 @@
     </script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gray-matter@4.0.3/dist/gray-matter.min.js"></script>
+    <script>
+      async function loadCourses() {
+        const courseFiles = [
+          "courses/course-one.md",
+          "courses/course-two.md",
+          // Add more files here
+        ];
+
+        const container = document.getElementById("course-list");
+
+        for (const file of courseFiles) {
+          const res = await fetch(file);
+          const raw = await res.text();
+          const course = matter(raw).data;
+
+          const card = document.createElement("div");
+          card.className = "col-md-6";
+
+          card.innerHTML = `
+        <div class="card shadow-sm h-100">
+          <iframe class="card-img-top" height="250" src="${
+            course.video
+          }" title="${course.title}" allowfullscreen></iframe>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="bi bi-megaphone-fill me-2"></i>${course.title}
+            </h5>
+            <p class="card-text">${course.description}</p>
+            <ul class="list-unstyled mb-3">
+              ${
+                course.price === "Free"
+                  ? `
+                <li><i class="bi bi-check-circle text-primary me-2"></i>Free course</li>
+              `
+                  : `
+                <li><i class="bi bi-check-circle text-primary me-2"></i>Price: ${course.price}</li>
+              `
+              }
+              <li><i class="bi bi-check-circle text-primary me-2"></i>Includes preview video</li>
+            </ul>
+            ${
+              course.trial
+                ? `<a href="${course.trial}" class="btn btn-outline-primary me-2">Try Free</a>`
+                : ""
+            }
+            ${
+              course.purchase
+                ? `<a href="${course.purchase}" class="btn btn-primary">Buy Now</a>`
+                : ""
+            }
+          </div>
+        </div>
+      `;
+
+          container.appendChild(card);
+        }
+      }
+
+      loadCourses();
+    </script>
   </body>
 </html>
