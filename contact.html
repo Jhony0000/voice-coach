@@ -250,11 +250,11 @@
                       </div>
 
                       <div class="col-12 text-center">
-                        <div class="loading">Loading</div>
+                        <!-- <div class="loading">Loading</div> -->
                         <div class="error-message"></div>
-                        <div class="sent-message">
+                        <!-- <div class="sent-message">
                           Your message has been sent. Thank you!
-                        </div>
+                        </div> -->
 
                         <button type="submit" class="btn btn-submit w-100">
                           Submit Message
@@ -428,6 +428,44 @@
       class="scroll-top d-flex align-items-center justify-content-center"
       ><i class="bi bi-arrow-up-short"></i
     ></a>
+    <div id="success-popup" class="popup hidden">
+      <div class="popup-content">
+        <h2>🎉 Message Sent!</h2>
+        <p>Thank you for contacting us. We'll get back to you shortly.</p>
+        <button onclick="closePopup()">Close</button>
+      </div>
+    </div>
+    <script>
+      const form = document.forms["contact"];
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const encodedData = new URLSearchParams(formData).toString();
+
+        fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: encodedData,
+        })
+          .then(() => {
+            // Reset the form
+            form.reset();
+
+            // Show the success popup
+            document.getElementById("success-popup").classList.add("show");
+            document.getElementById("success-popup").classList.remove("hidden");
+          })
+          .catch((error) => {
+            console.error("Form submission failed:", error);
+            alert("Oops! There was an error submitting your message.");
+          });
+      });
+
+      function closePopup() {
+        document.getElementById("success-popup").classList.remove("show");
+        document.getElementById("success-popup").classList.add("hidden");
+      }
+    </script>
 
     <!-- Vendor JS Files -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
