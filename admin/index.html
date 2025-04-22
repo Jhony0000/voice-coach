@@ -10,26 +10,9 @@
     <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 
     <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          const hash = window.location.hash;
-          const hasInvite = hash && hash.includes("invite_token");
-
-          // If there's an invite_token in the URL, open the signup window
-          if (!user && hasInvite) {
-            console.log("Invite token found. Opening signup.");
-            window.netlifyIdentity.open("signup");
-          }
-
-          // Redirect to admin after successful login
-          window.netlifyIdentity.on("login", () => {
-            window.location.href = "/admin/";
-          });
-        });
-
-        // Initialize Netlify Identity widget
-        window.netlifyIdentity.init();
-      }
+      window.netlifyIdentity.on("login", () => {
+        window.location.href = "/admin/";
+      });
     </script>
   </body>
 </html>

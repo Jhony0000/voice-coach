@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Onboard</title>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  </head>
+  <body>
+    <h2>Complete your registration</h2>
+    <form id="signup-form">
+      <input type="email" id="email" placeholder="Your Email" required /><br />
+      <input
+        type="password"
+        id="password"
+        placeholder="Choose Password"
+        required
+      /><br />
+      <button type="submit">Finish Signup</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+      const form = document.getElementById("signup-form");
+      const message = document.getElementById("message");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        netlifyIdentity
+          .signup({ email, password })
+          .then((user) => {
+            message.innerText =
+              "Signup successful! Check your email to confirm.";
+            netlifyIdentity.close();
+          })
+          .catch((err) => {
+            message.innerText = "Error: " + err.message;
+          });
+      });
+
+      window.netlifyIdentity.on("init", (user) => {
+        if (!user && window.location.hash.includes("invite_token")) {
+          netlifyIdentity.open("signup");
+        }
+      });
+
+      window.netlifyIdentity.init();
+    </script>
+  </body>
+</html>
