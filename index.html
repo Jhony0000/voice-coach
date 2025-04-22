@@ -28,7 +28,6 @@
     <meta property="og:type" content="website" />
 
     <!-- Favicons -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <link
       href="https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_profile_original/v1/attachments/profile/photo/0f28ca1cf454b59868af27af36f485bb-1687590953059/71a236c7-7b5e-4103-adfe-26ba7dc277cb.png"
       rel="icon"
@@ -1625,27 +1624,7 @@
 
       document.addEventListener("DOMContentLoaded", typeText);
     </script>
-    <!-- Main JS File -->
-     <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          const hash = window.location.hash;
-          const hasInvite = hash && hash.includes("invite_token");
-
-          if (!user && hasInvite) {
-            console.log("Invite token found. Opening signup.");
-            window.netlifyIdentity.open("signup");
-          }
-
-          window.netlifyIdentity.on("login", () => {
-            window.location.href = "/admin/";
-          });
-        });
-
-        window.netlifyIdentity.init();
-      }
-    </script>
- 
+    <!-- Main JS File --> 
     <script src="assets/js/main.js"></script>
   </body>
 </html>
