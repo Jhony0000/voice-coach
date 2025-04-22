@@ -3,31 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Admin Panel</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
     <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-
-    <script>
-      if (window.netlifyIdentity) {
-        // Initialize first
-        window.netlifyIdentity.init();
-
-        // After initialized
-        window.netlifyIdentity.on("init", (user) => {
-          const hash = window.location.hash;
-          const hasInviteToken = hash.includes("invite_token");
-
-          if (!user && hasInviteToken) {
-            console.log("Invite token found, opening signup flow...");
-            window.netlifyIdentity.open("signup");
-          }
-
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        });
-      }
-    </script>
   </body>
 </html>

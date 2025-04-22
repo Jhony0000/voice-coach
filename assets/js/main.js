@@ -182,21 +182,21 @@
   /**
    * Correct scrolling position upon page load for URLs containing hash links.
    */
-  window.addEventListener('load', function(e) {
-    if (window.location.hash) {
-      const token = window.location.hash;
-      if (token && token.includes("invite_token")) {
-            setTimeout(() => {
-            let section = document.querySelector(window.location.hash);
-             let scrollMarginTop = getComputedStyle(section).scrollMarginTop;
-              window.scrollTo({
-             top: section.offsetTop - parseInt(scrollMarginTop),
-           behavior: 'smooth'
-        });
-       }, 100);
-     }
-    }
-  });
+  // window.addEventListener('load', function(e) {
+  //   if (window.location.hash) {
+  //     const token = window.location.hash;
+  //     if (token && token.includes("invite_token")) {
+  //           setTimeout(() => {
+  //           let section = document.querySelector(window.location.hash);
+  //            let scrollMarginTop = getComputedStyle(section).scrollMarginTop;
+  //             window.scrollTo({
+  //            top: section.offsetTop - parseInt(scrollMarginTop),
+  //          behavior: 'smooth'
+  //       });
+  //      }, 100);
+  //    }
+  //   }
+  // });
 
   /**
    * Navmenu Scrollspy
