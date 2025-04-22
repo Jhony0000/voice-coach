@@ -1594,15 +1594,34 @@
     <script>
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/dashboard.html"; // Redirect after login
+          // Check for invite_token in the URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const inviteToken = urlParams.get('invite_token');  // Get invite_token from URL
+          
+          if (inviteToken) {
+            // Handle the invite token for email confirmation
+            console.log('Received invite_token:', inviteToken);  // Debugging
+            
+            // Confirm the invite using the invite_token
+            window.netlifyIdentity.confirmInvite(inviteToken, (error, user) => {
+              if (error) {
+                console.error('Error confirming invite:', error);
+                alert('Invitation confirmation failed. Please try again or contact support.');
+              } else {
+                console.log('User invited and confirmed:', user);  // Debugging user info
+                // Optionally, redirect to the dashboard or another page after confirmation
+                // document.location.href = '/dashboard.html';
+              }
             });
+          } else {
+            console.log('No invite_token found in URL');
           }
         });
+    
         window.netlifyIdentity.init();
       }
     </script>
+    
     
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/php-email-form/validate.js"></script>
