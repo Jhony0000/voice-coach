@@ -68,7 +68,7 @@
 
     <!-- Main CSS File -->
     <link href="assets/css/main.css" rel="stylesheet" />
-
+ 
     <!-- =======================================================
   * Template Name: EasyFolio
   * Template URL: https://bootstrapmade.com/easyfolio-bootstrap-portfolio-template/
@@ -1590,6 +1590,20 @@
   
     
     <!-- Vendor JS Files -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/dashboard.html"; // Redirect after login
+            });
+          }
+        });
+        window.netlifyIdentity.init();
+      }
+    </script>
+    
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/php-email-form/validate.js"></script>
     <script src="assets/vendor/aos/aos.js"></script>
