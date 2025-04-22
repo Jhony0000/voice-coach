@@ -1592,7 +1592,7 @@
       // If URL has #invite_token, redirect to /onboard/#invite_token=...
       const hash = window.location.hash;
       if (hash.includes("invite_token")) {
-        const newUrl = "/onboard/" + hash;
+        const newUrl = "/onboard/index.html" + hash;
         window.location.replace(newUrl);
       } else {
         // No invite token? Just show your normal homepage
