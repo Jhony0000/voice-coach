@@ -1,22 +1,35 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8" />
     <title>Admin Panel</title>
+    <!-- Netlify Identity Widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
-    <!-- <button onclick="netlifyIdentity.open()">Login / Signup</button> -->
-
+    <!-- Netlify CMS -->
     <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
     <script>
+      // Initialize the Identity widget
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
+          // If user is not logged in, open the widget if there's an invite token
+          const hash = window.location.hash;
+          const hasInviteToken = hash.includes("invite_token");
+
+          if (!user && hasInviteToken) {
+            window.netlifyIdentity.open("signup");
           }
+
+          // After login, reload admin panel
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
         });
+
+        // Trigger widget init
+        window.netlifyIdentity.init();
       }
     </script>
   </body>
