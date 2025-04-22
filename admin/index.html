@@ -6,13 +6,29 @@
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
-    <!-- Netlify CMS script -->
+    <!-- The CMS script -->
     <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 
     <script>
-      window.netlifyIdentity.on("login", () => {
-        window.location.href = "/admin/";
-      });
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          const hash = window.location.hash;
+          const hasInvite = hash && hash.includes("invite_token");
+
+          if (!user && hasInvite) {
+            // Show signup dialog
+            console.log("Invite token found. Opening signup.");
+            window.netlifyIdentity.open("signup");
+          }
+
+          // Redirect after login
+          window.netlifyIdentity.on("login", () => {
+            window.location.href = "/admin/";
+          });
+        });
+
+        window.netlifyIdentity.init();
+      }
     </script>
   </body>
 </html>

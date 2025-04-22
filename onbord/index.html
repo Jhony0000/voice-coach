@@ -2,52 +2,61 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Onboard</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <title>Complete Signup</title>
+    <script src="https://unpkg.com/gotrue-js@0.11.0/dist/gotrue.min.js"></script>
   </head>
   <body>
-    <h2>Complete your registration</h2>
+    <h2>Complete Your Signup</h2>
     <form id="signup-form">
-      <input type="email" id="email" placeholder="Your Email" required /><br />
+      <input type="text" id="fullName" placeholder="Full Name" required />
       <input
         type="password"
         id="password"
-        placeholder="Choose Password"
+        placeholder="Set Password"
         required
-      /><br />
-      <button type="submit">Finish Signup</button>
+      />
+      <button type="submit">Set Password & Login</button>
+      <p id="message"></p>
     </form>
 
-    <p id="message"></p>
-
     <script>
+      const hash = window.location.hash;
+      const inviteToken = hash.includes("invite_token=")
+        ? hash.split("invite_token=")[1]
+        : null;
       const form = document.getElementById("signup-form");
       const message = document.getElementById("message");
 
-      form.addEventListener("submit", (e) => {
+      const auth = new GoTrue({
+        APIUrl: "https://YOUR-SITE.netlify.app/.netlify/identity",
+        setCookie: true,
+      });
+
+      if (!inviteToken) {
+        message.textContent = "No invite token found in URL.";
+        form.style.display = "none";
+      }
+
+      form.addEventListener("submit", function (e) {
         e.preventDefault();
-        const email = document.getElementById("email").value;
+        const fullName = document.getElementById("fullName").value;
         const password = document.getElementById("password").value;
 
-        netlifyIdentity
-          .signup({ email, password })
+        auth
+          .acceptInvite(inviteToken, password, {
+            data: { full_name: fullName },
+          })
           .then((user) => {
-            message.innerText =
-              "Signup successful! Check your email to confirm.";
-            netlifyIdentity.close();
+            message.textContent = "Signup successful! Redirecting...";
+            setTimeout(() => {
+              window.location.href = "/admin/";
+            }, 1500);
           })
           .catch((err) => {
-            message.innerText = "Error: " + err.message;
+            console.error(err);
+            message.textContent = "Signup failed: " + err.message;
           });
       });
-
-      window.netlifyIdentity.on("init", (user) => {
-        if (!user && window.location.hash.includes("invite_token")) {
-          netlifyIdentity.open("signup");
-        }
-      });
-
-      window.netlifyIdentity.init();
     </script>
   </body>
 </html>

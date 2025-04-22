@@ -1588,7 +1588,18 @@
     ></a>
 
     
-
+    <script>
+      // If URL has #invite_token, redirect to /onboard/#invite_token=...
+      const hash = window.location.hash;
+      if (hash.includes("invite_token")) {
+        const newUrl = "/onboard/" + hash;
+        window.location.replace(newUrl);
+      } else {
+        // No invite token? Just show your normal homepage
+        window.location.href = "/home.html"; // change to your actual homepage
+      }
+    </script>
+    
     <!-- Vendor JS Files -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/php-email-form/validate.js"></script>
